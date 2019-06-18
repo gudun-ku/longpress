@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:longpress/bloc/bloc.dart';
 import 'package:longpress/ticker.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,6 +30,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TimerBloc _timerBloc = TimerBloc(ticker: Ticker());
+  final Widget _svgImage = new SvgPicture.asset('images/buttongreen.svg');
 
   void _longPressStart() {
     print("long press started");
@@ -62,7 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 onLongPressUp: _longPressUp,
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
-                  child: Image.asset('images/greenbutton.png'),
+                  child:
+                      _svgImage, //child: Image.asset('images/greenbutton.png'),
                 ),
               ),
             ),
