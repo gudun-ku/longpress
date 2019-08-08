@@ -30,7 +30,24 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TimerBloc _timerBloc = TimerBloc(ticker: Ticker());
-  final Widget _svgImage = new SvgPicture.asset('images/buttongreen.svg');
+
+  /*
+   <stop
+         stop-color="#FF8400"
+         offset="0"
+         id="stop10" />
+      <stop
+         stop-color="#F02E1C"
+         offset="1"
+         id="stop12" />
+  */
+  final Widget _svgImage = new SvgPicture.asset('images/buttonalert.svg');
+  final Widget _svgImageOverlay3 =
+      new SvgPicture.asset('images/buttoninner3.svg');
+  final Widget _svgImageOverlay2 =
+      new SvgPicture.asset('images/buttoninner2.svg');
+  final Widget _svgImageOverlay1 =
+      new SvgPicture.asset('images/buttoninner1.svg');
 
   void _longPressStart() {
     print("long press started");
@@ -46,15 +63,22 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Widget _getSvgOverlayImage(int seconds) {
+    if (seconds > 2) {
+      return _svgImageOverlay3;
+    } else if (seconds > 1) {
+      return _svgImageOverlay2;
+    } else {
+      return _svgImageOverlay1;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      backgroundColor: Colors.transparent,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: <Widget>[
             BlocProvider(
               bloc: _timerBloc,
@@ -62,28 +86,49 @@ class _MyHomePageState extends State<MyHomePage> {
                 onLongPress: _longPressStart,
                 onLongPressUp: _longPressUp,
                 child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child:
-                      _svgImage, //child: Image.asset('images/greenbutton.png'),
+                  padding: EdgeInsets.all(30.0),
+                  child: BlocBuilder(
+                      bloc: _timerBloc,
+                      builder: (context, state) {
+                        final int remainingSeconds =
+                            (state.duration % 60).floor();
+                        return Center(
+                          child: Stack(
+                            children: <Widget>[
+                              _svgImage, //child: Image.asset('images/greenbutton.png'),
+                              _getSvgOverlayImage(remainingSeconds),
+                            ],
+                          ),
+                        );
+                      }),
                 ),
               ),
             ),
             BlocBuilder(
               bloc: _timerBloc,
               builder: (context, state) {
+                final int remainingSeconds = (state.duration % 60).floor();
                 final String minutesStr = ((state.duration / 60) % 60)
                     .floor()
                     .toString()
                     .padLeft(2, '0');
                 final String secondsStr =
                     (state.duration % 60).floor().toString().padLeft(2, '0');
-                return Text(
-                  '$minutesStr:$secondsStr',
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.redAccent),
-                );
+                return remainingSeconds > 2
+                    ? SizedBox(
+                        height: 0,
+                        width: 0,
+                      )
+                    : Center(
+                        child: Text(
+                          '$minutesStr:$secondsStr',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      );
               },
             ),
           ],
