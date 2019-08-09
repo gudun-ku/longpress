@@ -49,6 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final Widget _svgImageOverlay1 =
       new SvgPicture.asset('images/buttoninner1.svg');
 
+  final Widget _svgImageCompassArrow =
+      new SvgPicture.asset('images/compass_arrow.svg');
+
   void _longPressStart() {
     print("long press started");
     if (_timerBloc.currentState is Ready) {
@@ -64,13 +67,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _getSvgOverlayImage(int seconds) {
-    if (seconds > 2) {
+    if (seconds > 3) {
+      return _svgImageOverlay3;
+    } else if (seconds > 2) {
       return _svgImageOverlay3;
     } else if (seconds > 1) {
       return _svgImageOverlay2;
-    } else {
+    } else if (seconds >= 0) {
       return _svgImageOverlay1;
     }
+  }
+
+  Widget _getCompassImage() {
+    return _svgImageCompassArrow;
   }
 
   @override
@@ -97,6 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: <Widget>[
                               _svgImage, //child: Image.asset('images/greenbutton.png'),
                               _getSvgOverlayImage(remainingSeconds),
+                              _getCompassImage()
                             ],
                           ),
                         );
