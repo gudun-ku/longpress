@@ -1,8 +1,10 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:longpress/bloc/bloc.dart';
 import 'package:longpress/ticker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,6 +32,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TimerBloc _timerBloc = TimerBloc(ticker: Ticker());
+
+  double _direction;
 
   /*
    <stop
@@ -78,8 +82,23 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Widget _getCompassImage() {
-    return _svgImageCompassArrow;
+  @override
+  void initState() {
+    super.initState();
+    FlutterCompass.events.listen((double direction) {
+      setState(() {
+        _direction = direction;
+      });
+    });
+  }
+
+  Widget _getCompassImage(int remainingSeconds) {
+    return remainingSeconds < 3
+        ? SizedBox()
+        : Transform.rotate(
+            angle: ((_direction ?? 0) * (math.pi / 180) * -1),
+            child: _svgImageCompassArrow,
+          );
   }
 
   @override
@@ -106,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: <Widget>[
                               _svgImage, //child: Image.asset('images/greenbutton.png'),
                               _getSvgOverlayImage(remainingSeconds),
-                              _getCompassImage()
+                              _getCompassImage(remainingSeconds)
                             ],
                           ),
                         );
