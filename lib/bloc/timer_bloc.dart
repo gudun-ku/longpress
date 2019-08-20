@@ -6,7 +6,7 @@ import 'package:longpress/ticker.dart';
 
 class TimerBloc extends Bloc<TimerEvent, TimerState> {
   final Ticker _ticker;
-  final int _duration = 3;
+  final int _duration = 4;
 
   StreamSubscription<int> _tickerSubscription;
 

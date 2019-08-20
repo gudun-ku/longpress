@@ -46,6 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
          id="stop12" />
   */
   final Widget _svgImage = new SvgPicture.asset('images/buttonalert.svg');
+  final Widget _svgImageOverlay4 =
+      new SvgPicture.asset('images/buttoninner4.svg');
   final Widget _svgImageOverlay3 =
       new SvgPicture.asset('images/buttoninner3.svg');
   final Widget _svgImageOverlay2 =
@@ -72,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _getSvgOverlayImage(int seconds) {
     if (seconds > 3) {
-      return _svgImageOverlay3;
+      return _svgImageOverlay4;
     } else if (seconds > 2) {
       return _svgImageOverlay3;
     } else if (seconds > 1) {
@@ -93,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _getCompassImage(int remainingSeconds) {
-    return remainingSeconds < 3
+    return remainingSeconds < 4
         ? SizedBox()
         : Transform.rotate(
             angle: ((_direction ?? 0) * (math.pi / 180) * -1),
@@ -143,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     .padLeft(2, '0');
                 final String secondsStr =
                     (state.duration % 60).floor().toString().padLeft(2, '0');
-                return remainingSeconds > 2
+                return remainingSeconds > 3
                     ? SizedBox(
                         height: 0,
                         width: 0,
