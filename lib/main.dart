@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   */
   final Widget _svgImage = new SvgPicture.asset('images/buttonalert.svg');
   final Widget _svgImageOverlay4 =
-      new SvgPicture.asset('images/buttoninner4.svg');
+      new SvgPicture.asset('images/buttoncompass.svg');
   final Widget _svgImageOverlay3 =
       new SvgPicture.asset('images/buttoninner3.svg');
   final Widget _svgImageOverlay2 =
